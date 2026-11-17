@@ -1,0 +1,92 @@
+Shape (rows, columns): (1338, 7)
+
+Data types:
+ age           int64
+sex             str
+bmi         float64
+children      int64
+smoker          str
+region          str
+charges     float64
+dtype: object
+
+Numeric summary:
+            age      bmi  children   charges
+count  1338.00  1338.00   1338.00   1338.00
+mean     39.21    30.66      1.09  13270.42
+std      14.05     6.10      1.21  12110.01
+min      18.00    15.96      0.00   1121.87
+25%      27.00    26.30      0.00   4740.29
+50%      39.00    30.40      1.00   9382.03
+75%      51.00    34.69      2.00  16639.91
+max      64.00    53.13      5.00  63770.43
+
+Categorical summary:
+          sex smoker     region
+count   1338   1338       1338
+unique     2      2          4
+top     male     no  southeast
+freq     676   1064        364
+Missing values per column:
+ age         0
+sex         0
+bmi         0
+children    0
+smoker      0
+region      0
+charges     0
+
+Duplicate rows: 1
+sex: ['female', 'male']
+smoker: ['no', 'yes']
+region: ['northeast', 'northwest', 'southeast', 'southwest']
+
+Shape after dropping duplicates: (1337, 7)
+Train: 1069 rows | Test: 268 rows
+Smoker share  train/test: 0.205 / 0.205
+Skewness: {'age': 0.08, 'bmi': 0.27, 'children': 0.85, 'charges': 1.51}
+          pearson_r  spearman_rho
+smoker        0.778         0.659
+age           0.289         0.516
+children      0.075         0.130
+bmi           0.180         0.097
+sex           0.037        -0.008
+age      bounds [    -11.5,      88.5] ->   0 outliers (0.0%), smokers among them: nan%
+bmi      bounds [     13.8,      47.4] ->   8 outliers (0.7%), smokers among them: 25%
+charges  bounds [ -13883.9,   35816.3] -> 101 outliers (9.4%), smokers among them: 98%
+
+High-charge outliers: smoker share = 98% | obese share = 99%
+            model  cv_R2  cv_R2_std   cv_MAE
+Linear Regression  0.469      0.079 4256.123
+    Random Forest  0.839      0.043 2293.236
+Gradient Boosting  0.831      0.045 2418.788
+Parameter grid:
+  n_estimators       [100, 200, 300]
+  learning_rate      [0.03, 0.05, 0.1]
+  max_depth          [2, 3, 4]
+  min_samples_leaf   [5, 10, 20]
+  subsample          [0.8, 1.0]
+Total combinations: 162 x 5 folds
+
+Best parameters: {'learning_rate': 0.03, 'max_depth': 4, 'min_samples_leaf': 5, 'n_estimators': 200, 'subsample': 0.8}
+Best CV RMSE: 4,736 USD
+CV R2 (best params): 0.841 +/- 0.040 | CV MAE: 2,251 USD
+            MAE      RMSE     R2
+train  1911.557  4266.913  0.876
+test   1628.534  3278.364  0.925
+
+Baseline (predict mean) test MAE: 9,081  RMSE: 12,013
+
+MAE by group:
+smoker
+no     1519.0
+yes    2052.0
+                      count    mean
+charges                            
+(0.0, 5000.0]            76   726.0
+(5000.0, 15000.0]       126  1114.0
+(15000.0, 30000.0]       33  4157.0
+(30000.0, 1000000.0]     33  3143.0
+
+Top features: {'smoker': 0.484, 'age': 0.388, 'bmi': 0.062, 'children': 0.043}
+Saved: ['metrics.pkl', 'model.pkl', 'preprocessor.pkl']
